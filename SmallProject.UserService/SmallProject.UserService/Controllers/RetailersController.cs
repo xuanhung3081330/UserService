@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmallProject.UserService.Application.Commands;
 using SmallProject.UserService.Domain.Aggregates.Retailer;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,18 @@ namespace SmallProject.UserService.Controllers
     [ApiController]
     public class RetailersController : ControllerBase
     {
-        private readonly IRetailerRepository _retailerRepo;
+        private readonly IMediator _mediator;
 
-        public RetailersController(IRetailerRepository retailerRepo)
+        public RetailersController(IMediator mediator)
         {
-            _retailerRepo = retailerRepo;
+            _mediator = mediator;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody]Retailer retailer)
+        public IActionResult Create([FromBody]CreateRetailerCommand retailer)
         {
-            _retailerRepo.Add(retailer);
+            _mediator.Send(retailer);
+
             return Ok();
         }
     }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SmallProject.UserService.Application.AIP;
 using SmallProject.UserService.Infrastructure;
 using SmallProject.UserService.Infrastructure.AIP;
 using SmallProject.UserService.Infrastructure.EFCore;
@@ -49,6 +50,9 @@ namespace SmallProject.UserService
 
             // Register repositories
             RepositoryAIP.Register(services);
+
+            // Add MediatR
+            MediatorAIP.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
