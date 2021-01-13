@@ -11,16 +11,18 @@ namespace SmallProject.UserService.Domain.Aggregates.Retailer
         public string Ward { get; private set; }
         public string District { get; private set; }
 
+        private Address() { }
+
         public Address(
             int houseNum,
             string street,
             string ward,
-            string distrct)
+            string district)
         {
             HouseNum = houseNum;
             Street = street;
             Ward = ward;
-            District = distrct;
+            District = district;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -9,6 +9,8 @@ namespace SmallProject.UserService.Domain.Aggregates.Retailer
         public Name Name { get; private set; }
         public Address Address { get; private set; }
 
+        private Retailer() { }
+
         public Retailer(Name name, Address address)
         {
             Name = name;
