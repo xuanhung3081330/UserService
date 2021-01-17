@@ -1,25 +1,29 @@
-﻿using SmallProject.UserService.Domain.Aggregates.Retailer;
+﻿using AutoMapper;
+using SmallProject.UserService.Domain.Aggregates.Retailer;
 using SmallProject.UserService.Infrastructure.EFCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dto = SmallProject.UserService.Infrastructure.DTOs;
 
 namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
 {
     public class RetailerRepository : IRetailerRepository
     {
         private readonly UserDbContext _context;
+        private readonly IMapper _mapper;
 
-        public RetailerRepository(UserDbContext context)
+        public RetailerRepository(UserDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public bool Add(Retailer retailer)
         {
-            _context.Retailers.Add(retailer);
-            _context.SaveChanges();
+            //_context.Retailers.Add(retailer);
+            //_context.SaveChanges();
             return true;
         }
 
@@ -38,13 +42,16 @@ namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
 
         public IEnumerable<Retailer> GetAll()
         {
-            return _context.Retailers.Where(x => true);
+            var retailerDto = _context.Retailers.Where(x => true);
+            var mappedResult = _mapper.Map<IEnumerable<Dto.Retailer.Retailer>, IEnumerable<Retailer>>(retailerDto);
+            return mappedResult;
         }
 
         public Retailer GetById(int id)
         {
-            var result = _context.Retailers.Find(id);
-            return result;
+            //var result = _context.Retailers.Find(id);
+            //return result;
+            throw new NotImplementedException();
         }
 
         public bool Update(Retailer retailer, int id)
