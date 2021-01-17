@@ -1,4 +1,6 @@
 using FluentValidation.AspNetCore;
+using GraphQL;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SmallProject.UserService.Application.AIP;
+using SmallProject.UserService.GraphQLCore;
+using SmallProject.UserService.GraphQLCore.Retailer;
 using SmallProject.UserService.Infrastructure;
 using SmallProject.UserService.Infrastructure.AIP;
 using SmallProject.UserService.Infrastructure.EFCore;
@@ -49,6 +54,12 @@ namespace SmallProject.UserService
 
             // Register repositories
             RepositoryAIP.Register(services);
+
+            // Add MediatR
+            MediatorAIP.Register(services);
+
+            // Register IDocumentExecuter
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +78,9 @@ namespace SmallProject.UserService
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Add GraphQL. This code line will make sure that the GraphQL runs on the /graphql endpoint
+            //app.UseGraphQL<RetailerSchema>("/graphql");
         }
     }
 }
