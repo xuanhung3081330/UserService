@@ -6,7 +6,7 @@ namespace SmallProject.UserService.Infrastructure.DTOs.Retailer
 {
     public class Retailer
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public Name Name { get; set; }
         public Address Address { get; set; }
     }

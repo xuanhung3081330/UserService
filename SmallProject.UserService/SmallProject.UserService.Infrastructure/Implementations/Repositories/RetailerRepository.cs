@@ -2,6 +2,7 @@
 using SmallProject.UserService.Infrastructure.EFCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
@@ -24,22 +25,37 @@ namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
 
         public bool Delete(int id)
         {
+            //var retailer = _context.Retailers.Find(id);
+            //// Ko thể thực hiện việc này vì IsDeleted được set là private set
+            //// Mục đích để tránh trường hợp bị sai business logic
+            ////retailer.IsDeleted = true;
+
+            //_context.SaveChanges();
+            //return true;
+
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Retailer> GetAll(string query)
+        public IEnumerable<Retailer> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Retailers.Where(x => true);
         }
 
         public Retailer GetById(int id)
         {
-            throw new NotImplementedException();
+            var result = _context.Retailers.Find(id);
+            return result;
         }
 
         public bool Update(Retailer retailer, int id)
         {
-            throw new NotImplementedException();
+            // Setting EntityState
+            // You can set the EntityState of an entity via the EntityEntry.State property, which is made available
+            // by the DbContext.Entry method.
+
+            _context.Entry(retailer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.SaveChanges();
+            return true;
         }
     }
 }
