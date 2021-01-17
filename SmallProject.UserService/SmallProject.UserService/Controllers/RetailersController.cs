@@ -33,37 +33,8 @@ namespace SmallProject.UserService.Controllers
             _retailerRepo = retailerRepo;
         }
 
-        [HttpPost("graphql/getall")]
-        public async Task<IActionResult> GetAll([FromBody]GraphQLQuery query)
-        {
-            // Create inputs. Convert Variables thành kiểu Inputs
-            var inputs = query.Variables.ToInputs();
-
-            // Create schema
-            var schema = new Schema
-            {
-                Query = new RetailerQuery(_retailerRepo)
-            };
-
-            // Truyền tham số vào hàm ExecuteAsync để thực hiện GraphQL request
-            var result = await _documentExecuter.ExecuteAsync(x =>
-            {
-                x.Schema = schema;
-                x.Query = query.Query;
-                x.OperationName = query.OperationName;
-                x.Inputs = inputs;
-            });
-
-            if (result.Errors?.Count > 0)
-            {
-                return BadRequest();
-            }
-
-            return Ok(result);
-        }
-
-        [HttpPost("graphql/getbyid")]
-        public async Task<IActionResult> GetById([FromBody] GraphQLQuery query)
+        [HttpPost("graphql")]
+        public async Task<IActionResult> GraphQLApi([FromBody]GraphQLQuery query)
         {
             // Create inputs. Convert Variables thành kiểu Inputs
             var inputs = query.Variables.ToInputs();
