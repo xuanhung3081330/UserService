@@ -13,6 +13,7 @@ using SmallProject.UserService.GraphQLCore;
 using SmallProject.UserService.GraphQLCore.Retailer;
 using SmallProject.UserService.Infrastructure;
 using SmallProject.UserService.Infrastructure.AIP;
+using SmallProject.UserService.Infrastructure.Configurations;
 using SmallProject.UserService.Infrastructure.EFCore;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,9 @@ namespace SmallProject.UserService
 
             // Register IDocumentExecuter
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+
+            // Register AutoMapper
+            MappingConfigurations.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
