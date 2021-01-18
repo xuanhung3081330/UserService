@@ -1,6 +1,8 @@
 using FluentValidation.AspNetCore;
 using GraphQL;
 using GraphQL.Types;
+using Hangfire;
+using Hangfire.MySql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -64,6 +66,13 @@ namespace SmallProject.UserService
 
             // Register AutoMapper
             MappingConfigurations.Register(services);
+
+            // Register Hangfire
+            services.AddHangfire(x => x.UseStorage<MySqlStorage>(new MySqlStorage(connectionSection.Value,
+                new MySqlStorageOptions
+                {
+                    TablesPrefix = "Hangfire"
+                })));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,6 +94,10 @@ namespace SmallProject.UserService
 
             // Add GraphQL. This code line will make sure that the GraphQL runs on the /graphql endpoint
             //app.UseGraphQL<RetailerSchema>("/graphql");
+
+            // Add Hangfire
+            app.UseHangfireDashboard("/dashboard");
+            app.UseHangfireServer();
         }
     }
 }
