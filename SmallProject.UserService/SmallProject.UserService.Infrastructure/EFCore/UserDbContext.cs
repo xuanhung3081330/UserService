@@ -3,12 +3,13 @@ using SmallProject.UserService.Domain.Aggregates.Retailer;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Dto = SmallProject.UserService.Infrastructure.DTOs;
 
 namespace SmallProject.UserService.Infrastructure.EFCore
 {
     public class UserDbContext : DbContext
     {
-        public DbSet<Retailer> Retailers { get; set; }
+        public DbSet<Dto.Retailer.Retailer> Retailers { get; set; }
 
         public UserDbContext(DbContextOptions<UserDbContext> options) : base(options) { }
 

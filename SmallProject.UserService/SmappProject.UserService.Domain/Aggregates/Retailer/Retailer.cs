@@ -8,6 +8,7 @@ namespace SmallProject.UserService.Domain.Aggregates.Retailer
     {
         public Name Name { get; private set; }
         public Address Address { get; private set; }
+        public bool IsDeleted { get; private set; }
 
         private Retailer() { }
 
@@ -15,6 +16,7 @@ namespace SmallProject.UserService.Domain.Aggregates.Retailer
         {
             Name = name;
             Address = address;
+            IsDeleted = false;
         }
     }
 }

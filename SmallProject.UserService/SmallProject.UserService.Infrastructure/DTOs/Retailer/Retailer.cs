@@ -6,8 +6,13 @@ namespace SmallProject.UserService.Infrastructure.DTOs.Retailer
 {
     public class Retailer
     {
-        public Guid Id { get; set; }
-        public Name Name { get; set; }
-        public Address Address { get; set; }
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int HouseNum { get; set; }
+        public string Street { get; set; }
+        public string Ward { get; set; }
+        public string District { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

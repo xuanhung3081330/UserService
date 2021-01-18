@@ -3,7 +3,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace SmallProject.UserService.Infrastructure.Migrations
 {
-    public partial class MigrateDatabase_v001 : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,10 +15,11 @@ namespace SmallProject.UserService.Infrastructure.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    HouseNum = table.Column<int>(nullable: true),
+                    HouseNum = table.Column<int>(nullable: false),
                     Street = table.Column<string>(nullable: true),
                     Ward = table.Column<string>(nullable: true),
-                    District = table.Column<string>(nullable: true)
+                    District = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
