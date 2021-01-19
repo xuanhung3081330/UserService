@@ -34,6 +34,14 @@ namespace SmallProject.UserService.Controllers
             _retailerRepo = retailerRepo;
         }
 
+        [HttpPost]
+        public IActionResult Create([FromBody]CreateRetailerCommand retailer)
+        {
+            _mediator.Send(retailer);
+
+            return Ok();
+        }
+
         [HttpPost("graphql")]
         public async Task<IActionResult> GraphQLApi([FromBody]GraphQLQuery query)
         {

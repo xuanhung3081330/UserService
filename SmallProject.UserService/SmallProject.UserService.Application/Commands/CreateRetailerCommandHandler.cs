@@ -19,10 +19,11 @@ namespace SmallProject.UserService.Application.Commands
 
         public async Task<bool> Handle(CreateRetailerCommand request, CancellationToken cancellationToken)
         {
+            // Add new Retailer and add AddCreatedRetailerDomainEvent
             Retailer retailer = new Retailer(request.Name, request.Address);
             _retailerRepo.Add(retailer);
 
-            return true;
+            return await _retailerRepo.SaveEntitiesAsync(cancellationToken);
         }
     }
 }
