@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SmallProject.UserService.Application.AIP;
+using SmallProject.UserService.Application.Configurations;
 using SmallProject.UserService.GraphQLCore;
 using SmallProject.UserService.GraphQLCore.Retailer;
 using SmallProject.UserService.Infrastructure;
@@ -40,6 +41,9 @@ namespace SmallProject.UserService
             // https://dev.to/marceljurtz/fluentvalidation-in-asp-net-core-2jni#:~:text=To%20use%20FluentValidation%2C%20you%20first,and%20you're%20all%20set!
             //services.AddMvc().AddFluentValidation(option => option.RegisterValidatorsFromAssembly(
             //    typeof());
+
+            // Add Options
+            services.AddOptions();
 
             // Register NewtonsoftJson
             services.AddControllers().AddNewtonsoftJson();
@@ -73,6 +77,12 @@ namespace SmallProject.UserService
                 {
                     TablesPrefix = "Hangfire"
                 })));
+
+            // Add RabbitMQ
+            services.Configure<RabbitMQConfiguration>(x => Configuration.GetSection("RabbitMQ").Bind(x));
+
+            // Add Publisher
+            PublisherAIP.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
