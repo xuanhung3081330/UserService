@@ -123,44 +123,40 @@ namespace SmallProject.UserService.Application.EventBus.Implementations
 
         public void SendRetailer(Retailer retailer)
         {
+            // Check if connection exists
             if (ConnectionExists())
             {
-                try
+                // Tạo 1 channel để publish hoặc consume từ queue
+                using (var channel = _connection.CreateModel())
                 {
-                    using (var channel = _connection.CreateModel())
-                    {
-                        // Declare a queue
-                        channel.QueueDeclare(
-                            queue: "HelloQueue",
-                            durable: false,
-                            exclusive: false,
-                            autoDelete: false,
-                            arguments: null);
+                    // Declare a queue
+                    channel.QueueDeclare(
+                        queue: "HelloQueue",
+                        durable: false,
+                        exclusive: false,
+                        autoDelete: false,
+                        arguments: null);
 
-                        // Convert .NET object to JSON String
-                        var json = JsonConvert.SerializeObject(retailer, Formatting.None,
-                            new JsonSerializerSettings()
-                            {
-                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                            });
+                    // Convert .NET object to JSON String
+                    var json = JsonConvert.SerializeObject(retailer, Formatting.None,
+                        new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
 
-                        // ???
-                        var body = Encoding.UTF8.GetBytes(json);
+                    // Format body
+                    var body = Encoding.UTF8.GetBytes(json);
 
-                        // Publish message
-                        channel.BasicPublish(exchange: "", routingKey: "HelloQueue", basicProperties: null, body: body);
-                    }
-                }
-                catch (Exception ex)
-                {
-
+                    // Publish message
+                    channel.BasicPublish(exchange: "", routingKey: "HelloQueue", basicProperties: null, body: body);
                 }
             }
         }
-
-        //public void Dispose()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
+
+    //public void Dispose()
+    //{
+    //    throw new NotImplementedException();
+    //}
+}
 }
