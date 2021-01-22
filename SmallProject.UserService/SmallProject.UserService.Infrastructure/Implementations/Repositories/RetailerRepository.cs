@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using MediatR;
 using SmallProject.UserService.Domain.Aggregates.Retailer;
 using SmallProject.UserService.Infrastructure.EFCore;
+using SmallProject.UserService.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Dto = SmallProject.UserService.Infrastructure.DTOs;
 
 namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
@@ -13,16 +17,19 @@ namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
     {
         private readonly UserDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public RetailerRepository(UserDbContext context, IMapper mapper)
+        public RetailerRepository(UserDbContext context, IMapper mapper, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public bool Add(Retailer retailer)
         {
-            //_context.Retailers.Add(retailer);
+            var mappedRetailer = _mapper.Map<Retailer, Dto.Retailer.Retailer>(retailer);
+            _context.Retailers.Add(mappedRetailer);
             //_context.SaveChanges();
             return true;
         }
@@ -52,6 +59,18 @@ namespace SmallProject.UserService.Infrastructure.Implementations.Repositories
             //var result = _context.Retailers.Find(id);
             //return result;
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        {
+            // Dispatch (cử đi) Domain Events collection
+            await _mediator.DispatchDomainEventAsync(_context);
+
+            // After executing this line all the changes (from the Command Handler and Domain Event Handlers)
+            // performed through the DbContext will be committed.
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return true;
         }
 
         public bool Update(Retailer retailer, int id)

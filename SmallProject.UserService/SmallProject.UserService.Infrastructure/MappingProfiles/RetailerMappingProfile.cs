@@ -19,6 +19,15 @@ namespace SmallProject.UserService.Infrastructure.MappingProfiles
                 .ForPath(dest => dest.Address.District, option => option.MapFrom(src => src.District))
                 .ForPath(dest => dest.Name.FirstName, option => option.MapFrom(src => src.FirstName))
                 .ForPath(dest => dest.Name.LastName, option => option.MapFrom(src => src.LastName));
+
+            // Retailer --> RetailerDTO
+            CreateMap<RetailerDomain, RetailerDTO>()
+                .ForMember(dest => dest.District, option => option.MapFrom(src => src.Address.District))
+                .ForMember(dest => dest.HouseNum, option => option.MapFrom(src => src.Address.HouseNum))
+                .ForMember(dest => dest.Street, option => option.MapFrom(src => src.Address.Street))
+                .ForMember(dest => dest.Ward, option => option.MapFrom(src => src.Address.Ward))
+                .ForMember(dest => dest.FirstName, option => option.MapFrom(src => src.Name.FirstName))
+                .ForMember(dest => dest.LastName, option => option.MapFrom(src => src.Name.LastName));
         }
     }
 }

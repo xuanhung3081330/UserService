@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SmallProject.UserService.Domain.Events;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,6 +18,17 @@ namespace SmallProject.UserService.Domain.Aggregates.Retailer
             Name = name;
             Address = address;
             IsDeleted = false;
+
+            // Add the RetailerCreatedDomainEvent to the domain events collection
+            // to be raised/dispatched when committing changes into the database (After DbContext.SaveChanges())
+            AddCreatedRetailerDomainEvent(name, address);
+        }
+
+        private void AddCreatedRetailerDomainEvent(Name name, Address address)
+        {
+            var retailerCreatedDomainEvent = new RetailerCreatedDomainEvent(this, name, address);
+
+            this.AddDomainEvent(retailerCreatedDomainEvent);
         }
     }
 }
